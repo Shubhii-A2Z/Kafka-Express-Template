@@ -1,15 +1,10 @@
 const express = require('express');
 const { StatusCodes } = require('http-status-codes');
-const { Kafka } = require('kafkajs');
+const { kafka } = require('../client');
 
 const PORT=process.env.PORT || 3000;
 const app=express();
 app.use(express.json());
-
-const kafka=new Kafka({
-    clientId: "order-service",
-    brokers: ["localhost:9092"]
-});
 
 const producer=kafka.producer();
 
@@ -23,7 +18,7 @@ class OrderService{
                 topic: 'order-created',
                 messages: [
                     {
-                        key: key,
+                        key: key, // partition = hash(key) % number_of_partitions
                         value: JSON.stringify({
                             orderData: orderData,
                             timeStamp: new Date().toISOString()

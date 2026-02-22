@@ -1,23 +1,21 @@
-const {Kafka}=require('kafkajs');
+const { kafka } = require('./client');
+
+// Admin does Infra Setup: Topics, Partitions creation
 
 // Topics to create
 const topicsToCreate=[
     {
-        name: "order-created",
-        partitions: 3,
-        replicationFactor: 1
+        topic: "order-created",
+        replicationFactor: 1,
+        numPartitions: 3,
     },
     {
-        name: "order-updated",
-        partitions: 1,
-        replicationFactor: 1
+        topic: "order-updated",
+        replicationFactor: 1,
+        numPartitions: 1,
     }
 ];
 
-const kafka=new Kafka({
-    clientId: "init",
-    brokers: ["localhost:9092"]
-});
 
 async function init() {
     // Creating the admin instance
@@ -27,15 +25,12 @@ async function init() {
         await admin.connect();
         console.log('Kafka admin connected');
 
+        // Listing all existing topics
         const topics=await admin.listTopics();
         console.log(`Existing topics: ${topics}`);
 
         const created=await admin.createTopics({
-            topics: topicsToCreate.map((topic)=>({
-                topic: topic.name,
-                numPartitions: topic.partitions || 3,
-                replicationFactor: topic.replicationFactor
-            })),
+            topics: topicsToCreate
         });
 
         console.log({created});

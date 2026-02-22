@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "order-service": "node --watch producer/order.service.js"
+    "order-service": "node --watch producer/order.service.js",
+    "mailer-service": "node consumer/mailer.service.js"
   },
   "keywords": [],
   "author": "",
