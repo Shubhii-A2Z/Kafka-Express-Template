@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "order-service": "node --watch producer/order.service.js",
-    "mailer-service": "node consumer/mailer.service.js"
+    "mailer-service": "node --watch consumer/mailer.service.js",
+    "user-service": "node --watch consumer/user.service.js"
   },
   "keywords": [],
   "author": "",

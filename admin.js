@@ -10,7 +10,7 @@ const topicsToCreate=[
         numPartitions: 3,
     },
     {
-        topic: "order-updated",
+        topic: "user-updated",
         replicationFactor: 1,
         numPartitions: 1,
     }

@@ -6,21 +6,32 @@ const PORT=process.env.PORT || 3000;
 const app=express();
 app.use(express.json());
 
+// creating a producer instance
 const producer=kafka.producer();
 
 class OrderService{
     async createOrder(orderData){
         try {
+            /*
+                Key decides which partition the message goes to.
+                If Key is undefined, message goes to random partition
+            */
             const key = orderData.userEmail || Date.now().toString();
             console.log('Sending order-created event');
 
+            // sending message to topic: 'order-created'
             await producer.send({
                 topic: 'order-created',
+                /*
+                    message contains:
+                    key: Unique identifier of the message
+                    value: Message Payload. JSON.stringify converts js object into a json string before sending.
+                */
                 messages: [
                     {
                         key: key, // partition = hash(key) % number_of_partitions
                         value: JSON.stringify({
-                            orderData: orderData,
+                            ...orderData,
                             timeStamp: new Date().toISOString()
                         }),
                     },
@@ -36,8 +47,9 @@ class OrderService{
 
     async updateUser(userEmail, orderId){
         try {
+            // sending message to topic: 'user-updated'
             await producer.send({
-                topic: 'order-updated',
+                topic: 'user-updated',
                 messages: [
                     {
                         key: userEmail,
