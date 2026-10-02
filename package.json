@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "order-service": "node --watch producer/order.service.js",
-    "mailer-service": "node --watch consumer/mailer.service.js",
-    "user-service": "node --watch consumer/user.service.js"
+    "start": "node --watch src/server.js",
+    "kafka:setup": "node src/events/setupTopics.js",
+    "order-service": "node --watch producer/order.service.js"
   },
   "keywords": [],
   "author": "",
